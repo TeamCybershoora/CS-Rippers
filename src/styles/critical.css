@@ -1,0 +1,106 @@
+/* Critical CSS for above-the-fold content */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Loading screen - critical for first paint */
+.loading-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: black;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  contain: strict;
+}
+
+.logo {
+  font-size: 60px;
+  font-weight: 300;
+  color: white;
+  margin-bottom: 40px;
+  letter-spacing: 1px;
+  text-align: center;
+}
+
+.loading-line {
+  width: 300px;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 1px;
+  overflow: hidden;
+  position: relative;
+}
+
+.moving-line {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 30%;
+  height: 100%;
+  background: white;
+  border-radius: 1px;
+  animation: moveLine 2s ease-in-out infinite;
+}
+
+@keyframes moveLine {
+  0% { left: -30%; }
+  100% { left: 100%; }
+}
+
+/* Desktop - critical for layout */
+.macos-desktop {
+  min-height: 100vh;
+  position: relative;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  overflow-x: hidden;
+  opacity: 0;
+  transform: scale(1.05);
+  transition: all 1.2s cubic-bezier(0.23, 1, 0.32, 1);
+  contain: layout style paint;
+}
+
+.macos-desktop.desktop-loaded {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Menu bar - critical for layout */
+.macos-menubar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 28px;
+  background: linear-gradient(180deg, 
+    rgba(30, 30, 30, 0.95) 0%,
+    rgba(25, 25, 25, 0.9) 100%);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  z-index: 1000;
+  contain: layout style;
+}
+
+/* Dock - critical for layout */
+.macos-dock {
+  position: fixed;
+  bottom: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+  contain: layout style;
+}

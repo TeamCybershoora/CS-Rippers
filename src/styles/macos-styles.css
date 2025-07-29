@@ -1,0 +1,1151 @@
+/* ========================================
+   OPTIMIZED MACOS STYLES
+   ======================================== */
+
+/* Loading Screen - Optimized */
+.loading-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: black;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  will-change: opacity;
+}
+
+/* Boot Logo Stage */
+.boot-logo-stage {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  animation: logoFadeIn 0.8s ease-in-out;
+}
+
+.boot-logo {
+  width: 120px;
+  height: 120px;
+  object-fit: contain;
+  filter: brightness(1.2) drop-shadow(0 4px 20px rgba(255, 255, 255, 0.3));
+  animation: logoGlow 2s ease-in-out infinite alternate;
+}
+
+@keyframes logoFadeIn {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.8);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+@keyframes logoGlow {
+  0% {
+    filter: brightness(1.2) drop-shadow(0 4px 20px rgba(255, 255, 255, 0.3));
+  }
+  100% {
+    filter: brightness(1.4) drop-shadow(0 6px 30px rgba(255, 255, 255, 0.5));
+  }
+}
+
+/* Boot Hello Stage */
+.boot-hello-stage {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  animation: helloFadeIn 0.6s ease-in-out;
+}
+
+.hello-text {
+  font-size: 48px;
+  font-weight: 300;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
+  color: white;
+  text-align: center;
+  letter-spacing: 1px;
+  animation: helloGlow 1.5s ease-in-out infinite alternate;
+}
+
+@keyframes helloFadeIn {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(-50%, -50%) translateY(0);
+  }
+}
+
+@keyframes helloGlow {
+  0% {
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+  }
+  100% {
+    text-shadow: 0 0 20px rgba(255, 255, 255, 0.8);
+  }
+}
+
+/* Boot Loading Stage */
+.boot-loading-stage {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  animation: loadingFadeIn 0.5s ease-in-out;
+}
+
+.boot-logo-small {
+  width: 80px;
+  height: 80px;
+  object-fit: contain;
+  margin-bottom: 30px;
+  filter: brightness(1.2) drop-shadow(0 2px 10px rgba(255, 255, 255, 0.3));
+}
+
+@keyframes loadingFadeIn {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.9);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+.loading-line {
+  width: 200px;
+  height: 3px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 2px;
+  overflow: hidden;
+  position: relative;
+}
+
+.moving-line {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  background: linear-gradient(90deg, 
+    rgba(255, 255, 255, 0.8) 0%, 
+    rgba(255, 255, 255, 1) 50%, 
+    rgba(255, 255, 255, 0.8) 100%);
+  border-radius: 2px;
+  transition: width 0.3s ease-out;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+}
+
+/* Desktop Animation - Optimized */
+.macos-desktop {
+  min-height: 100vh;
+  position: relative;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  overflow-x: hidden;
+  opacity: 0;
+  transform: scale(1.05);
+  transition: all 1.2s cubic-bezier(0.23, 1, 0.32, 1);
+  will-change: opacity, transform;
+}
+
+.macos-desktop.desktop-loaded {
+  opacity: 1;
+  transform: scale(1);
+  animation: desktopBreath 20s ease-in-out infinite;
+}
+
+.macos-desktop.desktop-loaded .macos-dock {
+  animation: dockSlideUp 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.5s both;
+}
+
+@keyframes dockSlideUp {
+  0% {
+    opacity: 0;
+    transform: translateY(100px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Subtle Desktop Breathing Animation - Optimized */
+@keyframes desktopBreath {
+  0%, 100% {
+    filter: brightness(1) saturate(1);
+  }
+  50% {
+    filter: brightness(1.02) saturate(1.05);
+  }
+}
+
+/* Theme Backgrounds - Optimized */
+.macos-desktop.theme-light {
+  background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+}
+
+.macos-desktop.theme-dark {
+  background: linear-gradient(135deg, #2c3e50 0%, #4a569d 100%);
+}
+
+.macos-desktop.wallpaper-monterey {
+  background: linear-gradient(135deg, #ff6b6b 0%, #4ecdc4 100%);
+}
+
+.macos-desktop.wallpaper-ventura {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.macos-desktop.wallpaper-sonoma {
+  background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
+}
+
+.macos-desktop.wallpaper-sequoia {
+  background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+}
+
+.macos-desktop.wallpaper-big-sur {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.macos-desktop.wallpaper-gradient {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+}
+
+.macos-desktop.wallpaper-minimal {
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+}
+
+/* Custom wallpaper */
+.macos-desktop.wallpaper-custom {
+  background: var(--custom-wallpaper, linear-gradient(135deg, #2c3e50 0%, #4a569d 100%));
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+/* macOS Menu Bar - Optimized */
+.macos-menubar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 28px;
+  background: linear-gradient(180deg, 
+    rgba(30, 30, 30, 0.95) 0%,
+    rgba(25, 25, 25, 0.9) 100%);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 16px;
+  z-index: 1000;
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.1) inset, 0 1px 12px rgba(0, 0, 0, 0.4);
+  will-change: backdrop-filter;
+}
+
+.menubar-left {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.cs-logo {
+  cursor: pointer;
+  padding: 2px 6px;
+  border-radius: 6px;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  will-change: transform;
+}
+
+.cs-logo:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+}
+
+.logo-image {
+  height: 20px;
+  width: auto;
+  object-fit: contain;
+  transition: all 0.2s;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.3));
+}
+
+.menu-item {
+  color: #fff;
+  font-size: 13px;
+  font-weight: 500;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
+  cursor: pointer;
+  padding: 2px 8px;
+  border-radius: 4px;
+  transition: background 0.15s ease-out;
+  letter-spacing: -0.01em;
+  will-change: background, transform;
+}
+
+.menu-item:hover {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  animation: menuItemPulse 0.3s ease-in-out;
+}
+
+@keyframes menuItemPulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.03); }
+  100% { transform: scale(1); }
+}
+
+.menu-item.active {
+  font-weight: 600;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.menu-icon {
+  display: inline-block;
+  margin-right: 4px;
+  vertical-align: middle;
+  opacity: 0.8;
+  transition: opacity 0.15s ease-out;
+}
+
+.menu-item:hover .menu-icon {
+  opacity: 1;
+}
+
+.menubar-right .time {
+  font-size: 13px;
+  font-weight: 500;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
+  letter-spacing: 0.01em;
+  font-variant-numeric: tabular-nums;
+}
+
+.menubar-right .datetime {
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
+  letter-spacing: 0.01em;
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+  cursor: pointer;
+  padding: 2px 8px;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+}
+
+.menubar-right .datetime:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.date-time-display {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  line-height: 1.1;
+}
+
+.time-display {
+  font-size: 13px;
+  font-weight: 500;
+  margin-bottom: 1px;
+}
+
+.date-display {
+  font-size: 11px;
+  font-weight: 400;
+  opacity: 0.8;
+}
+
+/* Dark theme compatibility for datetime */
+.theme-dark .menubar-right .datetime:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.theme-light .menubar-right .datetime:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+.system-icon {
+  padding: 4px 6px !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+}
+
+.system-icon svg {
+  color: rgba(255, 255, 255, 0.9);
+  transition: all 0.2s ease;
+  filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.1));
+}
+
+.system-icon:hover {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  transform: scale(1.05);
+}
+
+.system-icon:hover svg {
+  color: rgba(255, 255, 255, 1);
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.2));
+  transform: scale(1.1);
+}
+
+.system-icon:active {
+  transform: scale(0.95);
+  background: rgba(255, 255, 255, 0.15);
+}
+
+/* Legacy support for image icons */
+.menubar-icon-img {
+  height: 14px;
+  width: 14px;
+  object-fit: contain;
+  filter: brightness(1.2) drop-shadow(0 1px 1px rgba(0, 0, 0, 0.1));
+  transition: all 0.2s;
+}
+
+.system-icon:hover .menubar-icon-img {
+  filter: brightness(1.4) drop-shadow(0 1px 2px rgba(0, 0, 0, 0.2));
+  transform: scale(1.05);
+}
+
+.system-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* macOS Window - Optimized */
+.macos-window {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 90vw;
+  max-width: 1000px;
+  max-height: 80vh;
+  background: linear-gradient(135deg, 
+    rgba(255, 255, 255, 0.95) 0%,
+    rgba(245, 245, 245, 0.9) 100%);
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  box-shadow: 0 20px 64px rgba(0, 0, 0, 0.15);
+  z-index: 998;
+  overflow: hidden;
+  will-change: transform, opacity;
+}
+
+.window-open-animation {
+  animation: macosWindow 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes macosWindow {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.8);
+    filter: blur(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+    filter: blur(0px);
+  }
+}
+
+.window-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.window-controls {
+  display: flex;
+  gap: 8px;
+}
+
+.control {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.control.red {
+  background: #ff5f57;
+}
+
+.control.yellow {
+  background: #ffbd2e;
+}
+
+.control.green {
+  background: #28ca42;
+}
+
+.control:hover {
+  transform: scale(1.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.window-title {
+  font-weight: 600;
+  font-size: 14px;
+  color: #333;
+}
+
+.window-content {
+  padding: 2rem;
+  overflow-y: auto;
+  max-height: calc(80vh - 60px);
+}
+
+/* macOS Dock - Optimized */
+.macos-dock {
+  position: fixed;
+  bottom: 20px;
+  left: 0;
+  right: 0;
+  z-index: 999;
+  will-change: transform;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  pointer-events: none;
+}
+
+.macos-dock .dock-content {
+  pointer-events: all;
+}
+
+.dock-content {
+  display: flex;
+  align-items: end;
+  justify-content: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background: linear-gradient(135deg, 
+    rgba(255, 255, 255, 0.2) 0%,
+    rgba(255, 255, 255, 0.1) 100%);
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  margin: 0 auto;
+}
+
+.dock-item {
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  will-change: transform;
+}
+
+/* Animation delay classes for dock items */
+.dock-item-0 { animation-delay: 0s; }
+.dock-item-1 { animation-delay: 0.1s; }
+.dock-item-2 { animation-delay: 0.2s; }
+.dock-item-3 { animation-delay: 0.3s; }
+.dock-item-4 { animation-delay: 0.4s; }
+.dock-item-5 { animation-delay: 0.5s; }
+.dock-item-6 { animation-delay: 0.6s; }
+
+.dock-item:hover {
+  transform: translateY(-10px) scale(1.2);
+}
+
+.dock-icon {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  transition: all 0.2s;
+}
+
+.dock-icon-img,
+.dock-logo {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+}
+
+.dock-separator {
+  width: 1px;
+  height: 32px;
+  background: rgba(255, 255, 255, 0.3);
+  margin: 0 4px;
+}
+
+/* Responsive optimizations */
+@media (max-width: 768px) {
+  .macos-window {
+    width: 95vw;
+    max-height: 85vh;
+  }
+  
+  .window-content {
+    padding: 1rem;
+  }
+  
+  .macos-dock {
+    bottom: 10px;
+    left: 0;
+    right: 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    pointer-events: none;
+  }
+  
+  .macos-dock .dock-content {
+    pointer-events: all;
+  }
+  
+  .dock-content {
+    gap: 6px;
+    padding: 6px 12px;
+    justify-content: center;
+    margin: 0 auto;
+  }
+  
+  .dock-icon {
+    width: 40px;
+    height: 40px;
+  }
+  
+  .dock-icon-img,
+  .dock-logo {
+    width: 28px;
+    height: 28px;
+  }
+  
+  /* Boot screen responsive */
+  .boot-logo {
+    width: 100px;
+    height: 100px;
+  }
+  
+  .boot-logo-small {
+    width: 60px;
+    height: 60px;
+  }
+  
+  .hello-text {
+    font-size: 36px;
+  }
+  
+  .loading-line {
+    width: 150px;
+  }
+}
+
+/* Loading component styles */
+.menubar-loading {
+  height: 28px;
+  background: rgba(30, 30, 30, 0.5);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.dock-loading {
+  height: 80px;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-radius: 20px;
+  margin: 0 auto;
+  width: 300px;
+}
+
+/* Performance optimizations */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Customization Panel Styles */
+.customization-panel {
+  position: fixed;
+  top: 50px;
+  right: 20px;
+  width: 280px;
+  background: linear-gradient(135deg, 
+    rgba(255, 255, 255, 0.95) 0%,
+    rgba(245, 245, 245, 0.9) 50%,
+    rgba(235, 235, 235, 0.85) 100%);
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  box-shadow: 0 20px 64px rgba(0, 0, 0, 0.15);
+  z-index: 999;
+  will-change: transform, opacity;
+}
+
+.panel-open-animation {
+  animation: macosPanel 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes macosPanel {
+  0% {
+    opacity: 0;
+    transform: translateX(50px) translateY(-20px) scale(0.8);
+    filter: blur(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0) translateY(0) scale(1);
+    filter: blur(0px);
+  }
+}
+
+.theme-dark .customization-panel {
+  background: linear-gradient(135deg, 
+    rgba(60, 60, 60, 0.95) 0%,
+    rgba(45, 45, 45, 0.9) 50%,
+    rgba(30, 30, 30, 0.85) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  color: #fff;
+}
+
+.panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  font-weight: 600;
+}
+
+.theme-dark .panel-header {
+  border-bottom-color: rgba(255, 255, 255, 0.1);
+}
+
+.window-controls-right {
+  display: flex;
+  gap: 6px;
+}
+
+.panel-content {
+  padding: 16px;
+}
+
+.control-group {
+  margin-bottom: 16px;
+}
+
+.control-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.control-group select,
+.control-group input {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.8);
+  font-size: 14px;
+  transition: all 0.2s;
+}
+
+.theme-dark .control-group select,
+.theme-dark .control-group input {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.2);
+  color: white;
+}
+
+.color-options {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.color-option {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: all 0.2s;
+}
+
+.color-option.active {
+  border-color: rgba(255, 255, 255, 0.8);
+  transform: scale(1.1);
+}
+
+.color-option.blue { background: #007AFF; }
+.color-option.purple { background: #AF52DE; }
+.color-option.pink { background: #FF2D92; }
+.color-option.red { background: #FF3B30; }
+.color-option.orange { background: #FF9500; }
+.color-option.yellow { background: #FFCC00; }
+.color-option.green { background: #34C759; }
+
+.reset-section {
+  margin-top: 24px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.theme-dark .reset-section {
+  border-top-color: rgba(255, 255, 255, 0.1);
+}
+
+.reset-btn-full {
+  width: 100%;
+  background: linear-gradient(135deg, 
+    rgba(255, 59, 48, 0.9) 0%,
+    rgba(255, 69, 58, 0.8) 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 16px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-bottom: 8px;
+}
+
+.reset-btn-full:hover {
+  background: linear-gradient(135deg, 
+    rgba(255, 59, 48, 1) 0%,
+    rgba(255, 69, 58, 0.9) 100%);
+  transform: translateY(-2px);
+}
+
+.file-input {
+  margin-bottom: 8px;
+}
+
+.control-group small {
+  font-size: 12px;
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.theme-dark .control-group small {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+/* Hero Section Styles */
+.hero-section {
+  text-align: center;
+  padding: 3rem 2rem;
+  background: linear-gradient(135deg, 
+    rgba(255, 255, 255, 0.1) 0%,
+    rgba(255, 255, 255, 0.05) 100%);
+  border-radius: 16px;
+  margin-bottom: 2rem;
+}
+
+.hero-icon {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+}
+
+.hero-title {
+  font-size: 3rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.hero-subtitle {
+  font-size: 1.5rem;
+  font-weight: 500;
+  margin-bottom: 1rem;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.hero-desc {
+  font-size: 1.1rem;
+  margin-bottom: 2rem;
+  color: rgba(255, 255, 255, 0.8);
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.hero-btns {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.macos-btn {
+  padding: 12px 24px;
+  border-radius: 12px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 0.2s;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.macos-btn.primary {
+  background: linear-gradient(135deg, #007AFF 0%, #0051D5 100%);
+  color: white;
+}
+
+.macos-btn.secondary {
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.macos-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+}
+
+/* Apps Grid */
+.apps-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.app-card {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border-radius: 16px;
+  padding: 2rem;
+  text-align: center;
+  transition: all 0.3s;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.app-card:hover {
+  transform: translateY(-5px);
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.app-card.featured {
+  background: linear-gradient(135deg, 
+    rgba(255, 215, 0, 0.2) 0%,
+    rgba(255, 193, 7, 0.1) 100%);
+  border-color: rgba(255, 215, 0, 0.3);
+}
+
+.app-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.app-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: white;
+}
+
+.app-desc {
+  color: rgba(255, 255, 255, 0.8);
+  margin-bottom: 1.5rem;
+  line-height: 1.6;
+}
+
+.app-actions {
+  margin-top: auto;
+}
+
+.action-btn {
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.action-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/* CTA Section */
+.cta-section {
+  text-align: center;
+  padding: 3rem 2rem;
+  background: linear-gradient(135deg, 
+    rgba(0, 122, 255, 0.2) 0%,
+    rgba(88, 86, 214, 0.1) 100%);
+  border-radius: 16px;
+  border: 1px solid rgba(0, 122, 255, 0.3);
+}
+
+.cta-title {
+  font-size: 2rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: white;
+}
+
+.cta-desc {
+  font-size: 1.1rem;
+  margin-bottom: 2rem;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.cta-btn {
+  background: linear-gradient(135deg, #007AFF 0%, #0051D5 100%);
+  color: white;
+  padding: 16px 32px;
+  font-size: 18px;
+}
+
+/* Light theme wallpaper adjustments */
+.macos-desktop.theme-light.wallpaper-default {
+  background: linear-gradient(135deg, #e0e0e0 0%, #f5f5f5 100%);
+}
+
+.macos-desktop.theme-light.wallpaper-monterey {
+  background: linear-gradient(135deg, #ffb3ba 0%, #bae1ff 100%);
+}
+
+.macos-desktop.theme-light.wallpaper-ventura {
+  background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+}
+
+.macos-desktop.theme-light.wallpaper-sonoma {
+  background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+}
+
+.macos-desktop.theme-light.wallpaper-sequoia {
+  background: linear-gradient(135deg, #cfd9df 0%, #e2ebf0 100%);
+}
+
+.macos-desktop.theme-light.wallpaper-big-sur {
+  background: linear-gradient(135deg, #e3ffe7 0%, #d9e7ff 100%);
+}
+
+.macos-desktop.theme-light.wallpaper-gradient {
+  background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 50%, #ffeaa7 100%);
+}
+
+/* GPU acceleration for key elements */
+.macos-desktop,
+.macos-menubar,
+.macos-window,
+.macos-dock,
+.customization-panel {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  will-change: transform;
+}
+
+/* Optimize animations for 60fps */
+@media (prefers-reduced-motion: no-preference) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Critical CSS optimizations */
+.macos-desktop {
+  contain: layout style paint;
+}
+
+.macos-window {
+  contain: layout style;
+}
+
+.customization-panel {
+  contain: layout style;
+}
+
+/* Optimize text rendering */
+.hero-title,
+.app-title,
+.cta-title {
+  text-rendering: optimizeSpeed;
+  font-display: swap;
+}
+
+/* Optimize images */
+img {
+  content-visibility: auto;
+  contain-intrinsic-size: 1px 1px;
+}
+
+/* Optimize scrolling */
+.window-content {
+  overflow-anchor: none;
+  overscroll-behavior: contain;
+}
+
+/* Reduce layout thrashing */
+.dock-item,
+.app-card,
+.color-option {
+  contain: layout style paint;
+}
+
+/* Optimize hover effects */
+.dock-item:hover,
+.app-card:hover,
+.macos-btn:hover {
+  transform: translateZ(0) translateY(-2px);
+}
+
+/* Critical loading optimizations */
+.loading-screen {
+  contain: strict;
+  content-visibility: auto;
+}
+
+/* Optimize backdrop filters */
+.macos-menubar,
+.customization-panel,
+.macos-window {
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}

@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "critters": "^0.0.23",
     "mongodb": "^6.18.0",
     "next": "15.4.4",
     "nodemailer": "^7.0.5",

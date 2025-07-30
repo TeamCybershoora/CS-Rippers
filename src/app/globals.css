@@ -3,6 +3,7 @@
 /* Import macOS and Glass Effect Styles */
 @import "../styles/glass-effects.css";
 @import "../styles/macos-styles.css";
+@import "../styles/gsap-intro.css";
 
 :root {
   --background: #ffffff;

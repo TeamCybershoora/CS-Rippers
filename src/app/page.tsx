@@ -19,6 +19,11 @@ const MacOSDock = dynamic(() => import('./components/MacOSDock'), {
   loading: () => <div className="dock-loading" />
 });
 
+const CSRWindow = dynamic(() => import('./components/CSRWindow'), {
+  ssr: false,
+  loading: () => <div className="window-loading" />
+});
+
 export default function Home() {
   // Performance monitoring
   usePerformance('HomePage');
@@ -28,10 +33,11 @@ export default function Home() {
   const [wallpaper, setWallpaper] = useState('default');
   const [showAbout, setShowAbout] = useState(false);
   const [isPanelOpen, setIsPanelOpen] = useState(false);
+  const [showCSRWindow, setShowCSRWindow] = useState(false);
   const [isBooting, setIsBooting] = useState(true);
   const [bootProgress, setBootProgress] = useState(0);
   const [showDesktop, setShowDesktop] = useState(false);
-  const [bootStage, setBootStage] = useState('logo'); // 'logo', 'hello', 'loading'
+  const [bootStage, setBootStage] = useState('hello'); // 'hello', 'loading'
 
   useEffect(() => {
     if (
@@ -63,17 +69,12 @@ export default function Home() {
   // macOS Boot Sequence
   useEffect(() => {
     if (isBooting) {
-      // Stage 1: Show logo for 2 seconds
-      const logoTimer = setTimeout(() => {
-        setBootStage('hello');
-      }, 2000);
-
-      // Stage 2: Show hello text for 1.5 seconds
+      // Stage 1: Show hello text for 3 seconds (skip logo stage)
       const helloTimer = setTimeout(() => {
         setBootStage('loading');
-      }, 3500);
+      }, 3000);
 
-      // Stage 3: Loading progress
+      // Stage 2: Loading progress
       const loadingTimer = setTimeout(() => {
         const bootTimer = setInterval(() => {
           setBootProgress(prev => {
@@ -88,15 +89,22 @@ export default function Home() {
             return prev + 2;
           });
         }, 60);
-      }, 3500);
+      }, 3000);
 
       return () => {
-        clearTimeout(logoTimer);
         clearTimeout(helloTimer);
         clearTimeout(loadingTimer);
       };
     }
   }, [isBooting]);
+
+  // Update progress bar width without inline styles
+  useEffect(() => {
+    const progressBar = document.querySelector('.moving-line') as HTMLElement;
+    if (progressBar) {
+      progressBar.style.width = `${bootProgress}%`;
+    }
+  }, [bootProgress]);
 
   const savePreference = useCallback((key: string, value: string) => {
     localStorage.setItem(key, value);
@@ -175,6 +183,14 @@ export default function Home() {
     setIsPanelOpen(!isPanelOpen);
   }, [isPanelOpen]);
 
+  const handleCSRClick = useCallback(() => {
+    setShowCSRWindow(!showCSRWindow);
+  }, [showCSRWindow]);
+
+  const handleCSRWindowClose = useCallback(() => {
+    setShowCSRWindow(false);
+  }, []);
+
   // Throttled handlers for better performance
   const throttledThemeChange = useThrottle(handleThemeChange, 100);
   const throttledAccentChange = useThrottle(handleAccentChange, 100);
@@ -189,17 +205,6 @@ export default function Home() {
   if (isBooting) {
     return (
       <div className="loading-screen">
-        {bootStage === 'logo' && (
-          <div className="boot-logo-stage">
-            <Image
-              src="/images/CSR-logo.svg"
-              alt="CS RIPPERS"
-
-              className="boot-logo"
-            />
-          </div>
-        )}
-
         {bootStage === 'hello' && (
           <div className="boot-hello-stage">
             <div className="hello-text">Hello</div>
@@ -211,11 +216,15 @@ export default function Home() {
             <Image
               src="/images/CSR-logo.svg"
               alt="CS RIPPERS"
-
+              width={100}
+              height={100}
               className="boot-logo-small"
             />
             <div className="loading-line">
-              <div className="moving-line" style={{ width: `${bootProgress}%` }}></div>
+              <div 
+                className="moving-line" 
+                data-progress={bootProgress}
+              ></div>
             </div>
           </div>
         )}
@@ -379,8 +388,11 @@ export default function Home() {
         </div>
       )}
 
+      {/* CSR Window */}
+      <CSRWindow isOpen={showCSRWindow} onClose={handleCSRWindowClose} />
+
       {/* macOS Dock - Optimized Component */}
-      <MacOSDock onCustomizeClick={handleCustomizeClick} />
+      <MacOSDock onCustomizeClick={handleCustomizeClick} onCSRClick={handleCSRClick} />
     </main>
   );
 }

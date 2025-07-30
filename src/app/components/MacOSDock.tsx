@@ -4,17 +4,24 @@ import OptimizedImage from './OptimizedImage';
 
 interface MacOSDockProps {
   onCustomizeClick: () => void;
+  onCSRClick?: () => void;
 }
 
-const MacOSDock = memo(({ onCustomizeClick }: MacOSDockProps) => {
+const MacOSDock = memo(({ onCustomizeClick, onCSRClick }: MacOSDockProps) => {
   const handleCustomizeClick = useCallback(() => {
     onCustomizeClick();
   }, [onCustomizeClick]);
 
+  const handleCSRClick = useCallback(() => {
+    if (onCSRClick) {
+      onCSRClick();
+    }
+  }, [onCSRClick]);
+
   return (
     <div className="macos-dock">
       <div className="dock-content">
-        <div className="dock-item active dock-item-0" title="CS RIPPERS">
+        <div className="dock-item active dock-item-0" title="CS RIPPERS" onClick={handleCSRClick}>
           <div className="dock-icon">
             <OptimizedImage 
               src="/images/CSR-logo.svg" 

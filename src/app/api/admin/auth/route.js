@@ -1,4 +1,4 @@
-import nodemailer from 'nodemailer';
+import { sendEmailWithRetry, emailTemplates, verifyEmailConfig } from '@/lib/email';
 
 function generateOtp() {
   return Math.floor(100000 + Math.random() * 900000).toString();
@@ -7,34 +7,15 @@ function generateOtp() {
 async function sendAdminOtpEmail(email, otp) {
   console.log('Attempting to send OTP email to:', email);
   
-  const transporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-      user: process.env.EMAIL_USER,
-      pass: process.env.EMAIL_PASS,
-    },
-  });
-  
+  const template = emailTemplates.adminOtp(otp);
   const mailOptions = {
     from: process.env.EMAIL_USER,
     to: email,
-    subject: '🔐 CS Rippers Admin Panel - Security Verification',
-    html: `
-      <div style="font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif; max-width: 600px; margin: 0 auto; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 40px; border-radius: 16px;">
-        <div style="background: rgba(255, 255, 255, 0.95); padding: 30px; border-radius: 12px; text-align: center;">
-          <h1 style="color: #333; margin-bottom: 20px; font-size: 24px; font-weight: 600;">Admin Panel Access</h1>
-          <p style="color: #666; font-size: 16px; margin-bottom: 30px;">Your secure access code for CS Rippers Admin Panel:</p>
-          <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; font-size: 32px; font-weight: bold; padding: 20px; border-radius: 8px; letter-spacing: 4px; margin: 20px 0;">${otp}</div>
-          <p style="color: #888; font-size: 14px; margin-top: 20px;">This code expires in 10 minutes. Do not share this code with anyone.</p>
-          <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #eee;">
-            <p style="color: #999; font-size: 12px;">CS Rippers Admin Security System</p>
-          </div>
-        </div>
-      </div>
-    `
+    subject: template.subject,
+    html: template.html
   };
 
-  const result = await transporter.sendMail(mailOptions);
+  const result = await sendEmailWithRetry(mailOptions);
   console.log('Admin OTP email sent successfully to:', email);
   return result;
 }

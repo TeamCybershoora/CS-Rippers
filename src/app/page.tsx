@@ -5,8 +5,10 @@ import Image from 'next/image';
 import { useEffect, useState, useCallback, useMemo } from "react";
 import dynamic from "next/dynamic";
 import { usePerformance, useThrottle } from "../hooks/usePerformance";
+// import { useGSAPAnimations } from "../hooks/useGSAPAnimations"; // Temporarily disabled
 import "../styles/glass-effects.css";
 import "../styles/macos-styles.css";
+// import "../styles/gsap-animations.css"; // Temporarily disabled
 
 // Lazy load components for better performance
 const MacOSMenuBar = dynamic(() => import('./components/MacOSMenuBar'), {
@@ -24,9 +26,25 @@ const CSRWindow = dynamic(() => import('./components/CSRWindow'), {
   loading: () => <div className="window-loading" />
 });
 
+const GSAPIntro = dynamic(() => import('./components/GSAPIntro'), {
+  ssr: false,
+  loading: () => <div className="intro-loading" />
+});
+
 export default function Home() {
   // Performance monitoring
   usePerformance('HomePage');
+  
+  // GSAP Animations - Temporarily disabled for debugging
+  // const {
+  //   animateDesktopSequence,
+  //   animateWindowOpen,
+  //   animateWindowClose,
+  //   animatePanelSlide,
+  //   animateHeroSection,
+  //   animateAppsGrid,
+  //   animateCTASection
+  // } = useGSAPAnimations();
 
   const [theme, setTheme] = useState('dark');
   const [accentColor, setAccentColor] = useState('blue');
@@ -38,6 +56,7 @@ export default function Home() {
   const [bootProgress, setBootProgress] = useState(0);
   const [showDesktop, setShowDesktop] = useState(false);
   const [bootStage, setBootStage] = useState('hello'); // 'hello', 'loading'
+  const [showGSAPIntro, setShowGSAPIntro] = useState(false);
 
   useEffect(() => {
     if (
@@ -191,6 +210,15 @@ export default function Home() {
     setShowCSRWindow(false);
   }, []);
 
+  // const handleGSAPIntroComplete = useCallback(() => {
+  //   setShowGSAPIntro(false);
+  //   setTimeout(() => {
+  //     setShowDesktop(true);
+  //     // Start desktop animation sequence after intro
+  //     setTimeout(() => animateDesktopSequence(), 100);
+  //   }, 300);
+  // }, [animateDesktopSequence]);
+
   // Throttled handlers for better performance
   const throttledThemeChange = useThrottle(handleThemeChange, 100);
   const throttledAccentChange = useThrottle(handleAccentChange, 100);
@@ -200,6 +228,11 @@ export default function Home() {
   const desktopClasses = useMemo(() => {
     return `macos-desktop ${showDesktop ? 'desktop-loaded' : ''} theme-${theme} accent-${accentColor} wallpaper-${wallpaper}`;
   }, [showDesktop, theme, accentColor, wallpaper]);
+
+  // GSAP Intro Screen - Temporarily disabled for debugging
+  // if (showGSAPIntro) {
+  //   return <GSAPIntro onComplete={handleGSAPIntroComplete} />;
+  // }
 
   // Boot Screen Component
   if (isBooting) {
@@ -333,7 +366,7 @@ export default function Home() {
 
           <div className="window-content">
             {/* Hero Section */}
-            <section className="hero-section">
+            <section className="hero-section window-section-1">
               <div className="hero-icon">⚡</div>
               <h1 className="hero-title">CS RIPPERS</h1>
               <h2 className="hero-subtitle">The Next-Gen Hackathon & Competition Platform</h2>
@@ -345,7 +378,7 @@ export default function Home() {
             </section>
 
             {/* Features as macOS Apps */}
-            <section className="apps-grid">
+            <section className="apps-grid window-section-2">
               <div className="app-card">
                 <div className="app-icon">🧩</div>
                 <h3 className="app-title">Exciting Tasks</h3>
@@ -375,7 +408,7 @@ export default function Home() {
             </section>
 
             {/* Call to Action */}
-            <section className="cta-section">
+            <section className="cta-section window-section-3">
               <div className="cta-content">
                 <h3 className="cta-title">Ready to join the next big hackathon?</h3>
                 <p className="cta-desc">Sign up now and be part of the most exciting coding community. Compete, learn, and win!</p>

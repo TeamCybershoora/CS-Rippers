@@ -1,5 +1,5 @@
 /* ========================================
-   OPTIMIZED MACOS STYLES
+   OPTIMIZED MACOS STYLES - Dock Icons Always Visible
    ======================================== */
 
 /* Loading Screen - Optimized */
@@ -293,7 +293,7 @@
 
 /* Custom wallpaper */
 .macos-desktop.wallpaper-custom {
-  background: var(--custom-wallpaper, linear-gradient(135deg, #2c3e50 0%, #4a569d 100%));
+  background-image: var(--custom-wallpaper, linear-gradient(135deg, #2c3e50 0%, #4a569d 100%));
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -1093,6 +1093,9 @@
   }
 }
 
+/* Always show dock icon backgrounds */
+.macos-dock .dock-content .dock-item .dock-icon,
+.dock-item .dock-icon,
 .dock-icon {
   width: 48px;
   height: 48px;
@@ -1100,10 +1103,24 @@
   align-items: center;
   justify-content: center;
   border-radius: 12px;
-  background: rgba(255, 255, 255, 0.1);
-  -webkit-backdrop-filter: blur(10px);
-  backdrop-filter: blur(10px);
+  background: rgba(255, 255, 255, 0.1) !important;
+  background-color: rgba(255, 255, 255, 0.1) !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
+  -webkit-backdrop-filter: blur(10px) !important;
+  backdrop-filter: blur(10px) !important;
   transition: all 0.2s;
+}
+
+/* Enhanced background on hover */
+.macos-dock .dock-content .dock-item:hover .dock-icon,
+.dock-item:hover .dock-icon {
+  background: rgba(255, 255, 255, 0.2) !important;
+  background-color: rgba(255, 255, 255, 0.2) !important;
+  border: 1px solid rgba(255, 255, 255, 0.4) !important;
+  -webkit-backdrop-filter: blur(15px) !important;
+  backdrop-filter: blur(15px) !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2) !important;
 }
 
 .dock-icon-img,
@@ -1153,9 +1170,28 @@
     margin: 0 auto;
   }
   
+  /* Mobile dock icon styles - Always show background */
+  .macos-dock .dock-content .dock-item .dock-icon,
+  .dock-item .dock-icon,
   .dock-icon {
     width: 40px;
     height: 40px;
+    background: rgba(255, 255, 255, 0.1) !important;
+    background-color: rgba(255, 255, 255, 0.1) !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
+    -webkit-backdrop-filter: blur(10px) !important;
+    backdrop-filter: blur(10px) !important;
+  }
+  
+  .macos-dock .dock-content .dock-item:hover .dock-icon,
+  .dock-item:hover .dock-icon {
+    background: rgba(255, 255, 255, 0.2) !important;
+    background-color: rgba(255, 255, 255, 0.2) !important;
+    border: 1px solid rgba(255, 255, 255, 0.4) !important;
+    -webkit-backdrop-filter: blur(15px) !important;
+    backdrop-filter: blur(15px) !important;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2) !important;
   }
   
   .dock-icon-img,

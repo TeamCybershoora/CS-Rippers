@@ -1,0 +1,233 @@
+/* GSAP Animation Styles */
+
+/* Initial states for animated elements */
+.macos-desktop {
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.macos-desktop.desktop-loaded {
+  opacity: 1;
+}
+
+/* Menu Bar Initial State */
+.macos-menubar {
+  opacity: 0;
+  transform: translateY(-50px) scale(0.8);
+}
+
+.menu-item,
+.system-icon {
+  opacity: 0;
+  transform: translateX(-20px);
+}
+
+/* Dock Initial State */
+.macos-dock {
+  opacity: 0;
+  transform: translateY(50px) scale(0.8);
+}
+
+.dock-item {
+  opacity: 0;
+  transform: scale(0.3);
+}
+
+.dock-separator {
+  opacity: 0;
+}
+
+/* Window Animation States */
+.main-window,
+.csr-window {
+  opacity: 0;
+  transform: scale(0.3) translateY(100px) rotateX(-15deg);
+  transform-origin: center center;
+}
+
+.customization-panel {
+  opacity: 0;
+  transform: translateX(300px) scale(0.9);
+}
+
+/* Hero Section Animation States */
+.hero-icon {
+  transform: scale(0) rotate(-180deg);
+}
+
+.hero-title,
+.hero-subtitle,
+.hero-desc {
+  opacity: 0;
+  transform: translateY(30px);
+}
+
+.hero-btns .macos-btn {
+  opacity: 0;
+  transform: translateY(20px) scale(0.9);
+}
+
+/* App Cards Animation States */
+.app-card {
+  opacity: 0;
+  transform: translateY(50px) scale(0.9) rotateY(-15deg);
+}
+
+/* Window Sections Animation States */
+.window-section-1,
+.window-section-2,
+.window-section-3 {
+  opacity: 0;
+  transform: translateY(30px) scale(0.95);
+}
+
+/* CTA Section Animation State */
+.cta-section {
+  opacity: 0;
+  transform: translateY(30px) scale(0.95);
+}
+
+.cta-content {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.cta-btn {
+  opacity: 0;
+  transform: translateY(10px) scale(0.9);
+}
+
+/* Smooth transitions for interactive elements */
+.dock-item {
+  transition: transform 0.2s ease;
+}
+
+.dock-item:hover {
+  transform: scale(1.2) translateY(-10px);
+}
+
+.menu-item {
+  transition: all 0.2s ease;
+}
+
+.menu-item:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+}
+
+/* Window controls animations */
+.window-controls .control {
+  transition: all 0.2s ease;
+}
+
+.window-controls .control:hover {
+  transform: scale(1.1);
+}
+
+/* App card hover effects */
+.app-card {
+  transition: all 0.3s ease;
+}
+
+.app-card:hover {
+  transform: translateY(-5px) scale(1.02);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+/* Button hover animations */
+.macos-btn {
+  transition: all 0.2s ease;
+}
+
+.macos-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Loading states */
+.menubar-loading,
+.dock-loading,
+.window-loading {
+  width: 100%;
+  height: 40px;
+  background: linear-gradient(90deg, 
+    rgba(255,255,255,0.1) 0%, 
+    rgba(255,255,255,0.2) 50%, 
+    rgba(255,255,255,0.1) 100%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 8px;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+/* Stagger animation delays */
+.menu-item-1 { animation-delay: 0.1s; }
+.menu-item-2 { animation-delay: 0.2s; }
+.system-icon-1 { animation-delay: 0.3s; }
+.system-icon-2 { animation-delay: 0.4s; }
+.system-icon-3 { animation-delay: 0.5s; }
+.system-icon-4 { animation-delay: 0.6s; }
+.system-icon-5 { animation-delay: 0.7s; }
+.system-icon-6 { animation-delay: 0.8s; }
+.system-icon-7 { animation-delay: 0.9s; }
+
+.dock-item-0 { animation-delay: 0.1s; }
+.dock-item-1 { animation-delay: 0.2s; }
+.dock-item-2 { animation-delay: 0.3s; }
+.dock-item-3 { animation-delay: 0.4s; }
+.dock-item-4 { animation-delay: 0.5s; }
+.dock-item-5 { animation-delay: 0.6s; }
+.dock-item-6 { animation-delay: 0.7s; }
+
+.app-card:nth-child(1) { animation-delay: 0.1s; }
+.app-card:nth-child(2) { animation-delay: 0.25s; }
+.app-card:nth-child(3) { animation-delay: 0.4s; }
+
+/* Responsive animations */
+@media (max-width: 768px) {
+  .macos-menubar,
+  .macos-dock {
+    transform: scale(0.9);
+  }
+  
+  .main-window,
+  .csr-window {
+    transform: scale(0.2) translateY(150px);
+  }
+  
+  .customization-panel {
+    transform: translateX(100%) scale(0.95);
+  }
+}
+
+/* Performance optimizations */
+.macos-desktop * {
+  will-change: transform, opacity;
+}
+
+/* Reduce motion for accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .macos-menubar,
+  .macos-dock,
+  .main-window,
+  .csr-window,
+  .customization-panel,
+  .hero-icon,
+  .hero-title,
+  .hero-subtitle,
+  .hero-desc,
+  .hero-btns .macos-btn,
+  .app-card,
+  .cta-section {
+    transition: none !important;
+    animation: none !important;
+  }
+}

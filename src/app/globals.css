@@ -4,6 +4,8 @@
 @import "../styles/glass-effects.css";
 @import "../styles/macos-styles.css";
 @import "../styles/gsap-intro.css";
+@import "../styles/admin-panel.css";
+@import "../styles/admin-login-animations.css";
 
 :root {
   --background: #ffffff;

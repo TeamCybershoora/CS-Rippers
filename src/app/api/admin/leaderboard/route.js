@@ -235,7 +235,7 @@ export async function POST(request) {
     await verifyAdminToken(request);
 
     const body = await request.json();
-    const { action, data } = body;
+    const { action } = body;
 
     const client = await clientPromise;
     const db = client.db();
@@ -250,7 +250,6 @@ export async function POST(request) {
         
         // Update ranks
         const bulkOps = allUsers.map((user, index) => {
-          const collection = students.find(s => s._id.equals(user._id)) ? 'students' : 'members';
           return {
             updateOne: {
               filter: { _id: user._id },

@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { redirectIfAuthenticated, setAuthData, redirectToDashboard } from "../../lib/auth";
 
 const CLOUD_NAME = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
 const UPLOAD_PRESET = process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET;
@@ -30,13 +31,8 @@ export default function RegisterPage() {
   const [otpLoading, setOtpLoading] = useState(false);
 
   useEffect(() => {
-    if (
-      typeof window !== "undefined" &&
-      localStorage.getItem("isLoggedIn") &&
-      localStorage.getItem("isOtpVerified")
-    ) {
-      window.location.replace("/dashboard");
-    }
+    // Check if user is already authenticated and redirect if needed
+    redirectIfAuthenticated();
   }, []);
 
   const handlePhotoChange = (e) => {
@@ -122,15 +118,10 @@ export default function RegisterPage() {
       });
       const data = await res.json();
       if (data.success) {
-        if (typeof window !== 'undefined') {
-          localStorage.setItem('isLoggedIn', 'true');
-          localStorage.setItem('isOtpVerified', 'true');
-          document.cookie = `isLoggedIn=true; path=/`;
-          document.cookie = `isOtpVerified=true; path=/`;
-        }
+        setAuthData(data.userId || userId);
         showToast("Registration complete!", "success");
         setTimeout(() => {
-          window.location.href = "/dashboard";
+          redirectToDashboard();
         }, 1200);
       } else {
         showToast(data.error || "Invalid OTP", "error");

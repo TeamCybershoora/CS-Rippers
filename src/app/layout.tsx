@@ -1,6 +1,8 @@
 import "./globals.css";
 import "../styles/critical.css";
 import "../styles/admin-macos-liquid.css";
+import "../styles/dashboard-liquid-glass.css";
+import "../styles/dashboard-modals.css";
 
 export const metadata = {
   title: "CS RIPPERS",

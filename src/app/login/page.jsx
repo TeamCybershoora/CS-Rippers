@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { redirectIfAuthenticated, setAuthData, redirectToDashboard } from "../../lib/auth";
 
 export default function LoginPage() {
   const [identifier, setIdentifier] = useState(""); // email or mobile
@@ -20,13 +21,8 @@ export default function LoginPage() {
   const [identifierStatusMsg, setIdentifierStatusMsg] = useState("");
 
   useEffect(() => {
-    if (
-      typeof window !== "undefined" &&
-      localStorage.getItem("isLoggedIn") &&
-      localStorage.getItem("isOtpVerified")
-    ) {
-      window.location.replace("/dashboard");
-    }
+    // Check if user is already authenticated and redirect if needed
+    redirectIfAuthenticated();
   }, []);
 
   const showToast = (msg, type) => {
@@ -83,15 +79,10 @@ export default function LoginPage() {
       });
       const data = await res.json();
       if (data.success) {
-        if (typeof window !== 'undefined') {
-          localStorage.setItem('isLoggedIn', 'true');
-          localStorage.setItem('isOtpVerified', 'true');
-          document.cookie = `isLoggedIn=true; path=/`;
-          document.cookie = `isOtpVerified=true; path=/`;
-        }
+        setAuthData(data.userId || userId);
         showToast("Login successful!", "success");
         setTimeout(() => {
-          window.location.href = "/dashboard";
+          redirectToDashboard();
         }, 1200);
       } else {
         showToast(data.error || "Invalid OTP", "error");

@@ -402,6 +402,10 @@
   opacity: 1;
 }
 
+.menu-item.clickable {
+  cursor: pointer;
+}
+
 .menubar-right .time {
   font-size: 13px;
   font-weight: 500;

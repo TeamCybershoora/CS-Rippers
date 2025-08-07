@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { useEffect, useState, useCallback, useMemo } from "react";
 import dynamic from "next/dynamic";
 import { usePerformance, useThrottle } from "../hooks/usePerformance";
+import { redirectIfAuthenticated } from "../lib/auth";
 // import { useGSAPAnimations } from "../hooks/useGSAPAnimations"; // Temporarily disabled
 import "../styles/glass-effects.css";
 import "../styles/macos-styles.css";
@@ -26,10 +27,10 @@ const CSRWindow = dynamic(() => import('./components/CSRWindow'), {
   loading: () => <div className="window-loading" />
 });
 
-const GSAPIntro = dynamic(() => import('./components/GSAPIntro'), {
-  ssr: false,
-  loading: () => <div className="intro-loading" />
-});
+// const GSAPIntro = dynamic(() => import('./components/GSAPIntro'), {
+//   ssr: false,
+//   loading: () => <div className="intro-loading" />
+// });
 
 export default function Home() {
   // Performance monitoring
@@ -56,16 +57,11 @@ export default function Home() {
   const [bootProgress, setBootProgress] = useState(0);
   const [showDesktop, setShowDesktop] = useState(false);
   const [bootStage, setBootStage] = useState('hello'); // 'hello', 'loading'
-  const [showGSAPIntro, setShowGSAPIntro] = useState(false);
+  // const [showGSAPIntro, setShowGSAPIntro] = useState(false);
 
   useEffect(() => {
-    if (
-      typeof window !== "undefined" &&
-      localStorage.getItem("isLoggedIn") &&
-      localStorage.getItem("isOtpVerified")
-    ) {
-      window.location.replace("/dashboard");
-    }
+    // Check if user is already authenticated and redirect if needed
+    redirectIfAuthenticated();
 
     // Load user preferences - default to dark theme
     const savedTheme = localStorage.getItem('theme') || 'dark';

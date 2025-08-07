@@ -12,7 +12,7 @@ export async function GET() {
     };
 
     const missingVars = Object.entries(envCheck)
-      .filter(([key, value]) => value.includes('❌'))
+      .filter(([, value]) => value.includes('❌'))
       .map(([key]) => key);
 
     const allSet = missingVars.length === 0;

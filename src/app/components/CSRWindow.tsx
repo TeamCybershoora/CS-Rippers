@@ -1,6 +1,5 @@
 import { memo, useCallback, useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
-import OptimizedImage from './OptimizedImage';
 
 interface CSRWindowProps {
   isOpen: boolean;

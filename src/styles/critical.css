@@ -89,8 +89,8 @@ body {
   background: linear-gradient(180deg, 
     rgba(30, 30, 30, 0.95) 0%,
     rgba(25, 25, 25, 0.9) 100%);
-  backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(20px);
   z-index: 1000;
   contain: layout style;
 }
@@ -103,4 +103,9 @@ body {
   transform: translateX(-50%);
   z-index: 1000;
   contain: layout style;
+}
+
+/* Performance optimization container */
+.performance-container {
+  contain: layout style paint;
 }

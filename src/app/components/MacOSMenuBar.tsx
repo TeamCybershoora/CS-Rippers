@@ -1,4 +1,4 @@
-import { memo, useCallback, useState, useEffect, useMemo } from 'react';
+import { memo, useState, useEffect, useMemo } from 'react';
 import OptimizedImage from './OptimizedImage';
 
 interface MacOSMenuBarProps {
@@ -6,9 +6,6 @@ interface MacOSMenuBarProps {
 }
 
 const MacOSMenuBar = memo(({ onAboutClick }: MacOSMenuBarProps) => {
-  const handleAboutClick = useCallback(() => {
-    onAboutClick();
-  }, [onAboutClick]);
 
   // Real-time clock state
   const [currentTime, setCurrentTime] = useState('');
@@ -64,7 +61,7 @@ const MacOSMenuBar = memo(({ onAboutClick }: MacOSMenuBarProps) => {
             priority
           />
         </div>
-        <span className="menu-item menu-item-1 active">CS RIPPERS</span>
+        <span className="menu-item menu-item-1 active clickable" onClick={onAboutClick}>CS RIPPERS</span>
       </div>
       <div className="menubar-center">
         <span className="menu-item menu-item-2 datetime" title={tooltipText}>

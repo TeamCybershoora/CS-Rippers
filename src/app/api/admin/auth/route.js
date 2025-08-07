@@ -1,4 +1,4 @@
-import { sendEmailWithRetry, emailTemplates, verifyEmailConfig } from '@/lib/email';
+import { sendEmailWithRetry, emailTemplates } from '@/lib/email';
 
 function generateOtp() {
   return Math.floor(100000 + Math.random() * 900000).toString();
@@ -199,7 +199,7 @@ export async function GET(request) {
       }
     }), { status: 200 });
 
-  } catch (error) {
+  } catch {
     return new Response(JSON.stringify({ 
       success: false, 
       error: 'Invalid token format' 

@@ -17,7 +17,6 @@ export default function GSAPIntro({ onComplete }: GSAPIntroProps) {
   const progressRef = useRef<HTMLDivElement>(null);
   const glowRef = useRef<HTMLDivElement>(null);
   const [progress, setProgress] = useState(0);
-  const [currentText, setCurrentText] = useState('Initializing...');
 
   useEffect(() => {
     const container = containerRef.current;

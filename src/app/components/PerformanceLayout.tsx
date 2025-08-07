@@ -13,7 +13,7 @@ const PerformanceLayout = memo(({ children, className, name }: PerformanceLayout
   usePerformance(name);
   
   return (
-    <div className={className} style={{ contain: 'layout style paint' }}>
+    <div className={`${className} performance-container`}>
       {children}
     </div>
   );

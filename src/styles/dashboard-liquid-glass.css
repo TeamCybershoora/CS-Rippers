@@ -1,0 +1,557 @@
+/* ========================================
+   DASHBOARD LIQUID GLASS THEME - macOS Style
+   Dark Black Theme with Liquid Glass Effects
+   ======================================== */
+
+/* CSS Variables for Dashboard */
+:root {
+  /* Dark Theme Colors */
+  --dashboard-bg: #000000;
+  --dashboard-surface: rgba(15, 15, 15, 0.95);
+  --dashboard-surface-hover: rgba(25, 25, 25, 0.95);
+  --dashboard-border: rgba(255, 255, 255, 0.1);
+  --dashboard-border-hover: rgba(102, 126, 234, 0.3);
+  
+  /* Text Colors */
+  --text-primary: #ffffff;
+  --text-secondary: rgba(255, 255, 255, 0.7);
+  --text-tertiary: rgba(255, 255, 255, 0.5);
+  --text-accent: #667eea;
+  
+  /* Glass Effects */
+  --glass-blur: 20px;
+  --glass-blur-strong: 30px;
+  --glass-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+  --glass-shadow-hover: 0 30px 60px rgba(0, 0, 0, 0.4);
+  
+  /* Gradients */
+  --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  --gradient-secondary: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  --gradient-success: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+  --gradient-warning: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+  --gradient-danger: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+  
+  /* Animation Variables */
+  --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-bounce: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* Global Dashboard Styles */
+.dashboard-container {
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Enhanced Liquid Glass Effects */
+.liquid-glass {
+  background: var(--dashboard-surface);
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  backdrop-filter: blur(var(--glass-blur));
+  border: 1px solid var(--dashboard-border);
+  box-shadow: var(--glass-shadow);
+  transition: var(--transition-smooth);
+  position: relative;
+  overflow: hidden;
+}
+
+.liquid-glass::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.05),
+    transparent
+  );
+  transition: left 0.6s ease;
+}
+
+.liquid-glass:hover::before {
+  left: 100%;
+}
+
+.liquid-glass:hover {
+  border-color: var(--dashboard-border-hover);
+  box-shadow: var(--glass-shadow-hover);
+  transform: translateY(-2px);
+}
+
+/* Floating Animation */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.floating {
+  animation: float 6s ease-in-out infinite;
+}
+
+/* Pulse Animation */
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+.pulse {
+  animation: pulse 2s ease-in-out infinite;
+}
+
+/* Glow Effect */
+.glow {
+  position: relative;
+}
+
+.glow::after {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: var(--gradient-primary);
+  border-radius: inherit;
+  z-index: -1;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.glow:hover::after {
+  opacity: 0.3;
+}
+
+/* Enhanced Sidebar */
+.sidebar {
+  background: var(--dashboard-surface);
+  -webkit-backdrop-filter: blur(var(--glass-blur-strong));
+  backdrop-filter: blur(var(--glass-blur-strong));
+  border-right: 1px solid var(--dashboard-border);
+  box-shadow: 4px 0 20px rgba(0, 0, 0, 0.2);
+}
+
+.nav-item {
+  position: relative;
+  overflow: hidden;
+}
+
+.nav-item::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(102, 126, 234, 0.1),
+    transparent
+  );
+  transition: left 0.4s ease;
+}
+
+.nav-item:hover::before {
+  left: 100%;
+}
+
+.nav-item.active {
+  background: rgba(102, 126, 234, 0.15);
+  border: 1px solid rgba(102, 126, 234, 0.3);
+  box-shadow: 0 4px 16px rgba(102, 126, 234, 0.2);
+}
+
+/* Enhanced Cards */
+.stat-card,
+.hackathon-card,
+.task-card,
+.achievement-card,
+.analytics-card {
+  background: var(--dashboard-surface);
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  backdrop-filter: blur(var(--glass-blur));
+  border: 1px solid var(--dashboard-border);
+  box-shadow: var(--glass-shadow);
+  transition: var(--transition-smooth);
+  position: relative;
+  overflow: hidden;
+}
+
+.stat-card::before,
+.hackathon-card::before,
+.task-card::before,
+.achievement-card::before,
+.analytics-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.03),
+    transparent
+  );
+  transition: left 0.6s ease;
+}
+
+.stat-card:hover::before,
+.hackathon-card:hover::before,
+.task-card:hover::before,
+.achievement-card:hover::before,
+.analytics-card:hover::before {
+  left: 100%;
+}
+
+.stat-card:hover,
+.hackathon-card:hover,
+.task-card:hover,
+.achievement-card:hover,
+.analytics-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--dashboard-border-hover);
+  box-shadow: var(--glass-shadow-hover);
+}
+
+/* Enhanced Icons with Gradient Backgrounds */
+.stat-icon,
+.activity-icon,
+.achievement-icon {
+  background: var(--gradient-primary);
+  position: relative;
+  overflow: hidden;
+}
+
+.stat-icon::before,
+.activity-icon::before,
+.achievement-icon::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
+  transition: left 0.5s ease;
+}
+
+.stat-icon:hover::before,
+.activity-icon:hover::before,
+.achievement-icon:hover::before {
+  left: 100%;
+}
+
+/* Enhanced Buttons */
+.add-btn,
+.logout-btn,
+.filter-btn,
+.action-btn {
+  position: relative;
+  overflow: hidden;
+  transition: var(--transition-smooth);
+}
+
+.add-btn::before,
+.logout-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.1),
+    transparent
+  );
+  transition: left 0.4s ease;
+}
+
+.add-btn:hover::before,
+.logout-btn:hover::before {
+  left: 100%;
+}
+
+.add-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(102, 126, 234, 0.3);
+}
+
+.logout-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(239, 68, 68, 0.3);
+}
+
+/* Enhanced Progress Bars */
+.progress-fill,
+.skill-fill {
+  background: var(--gradient-primary);
+  position: relative;
+  overflow: hidden;
+}
+
+.progress-fill::before,
+.skill-fill::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.3),
+    transparent
+  );
+  animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    left: -100%;
+  }
+  100% {
+    left: 100%;
+  }
+}
+
+/* Enhanced Chart Bars */
+.chart-bar {
+  background: var(--gradient-primary);
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.chart-bar::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
+  transition: left 0.5s ease;
+}
+
+.chart-bar:hover::before {
+  left: 100%;
+}
+
+.chart-bar:hover {
+  transform: scale(1.05);
+  filter: brightness(1.2);
+  box-shadow: 0 4px 16px rgba(102, 126, 234, 0.4);
+}
+
+/* Status Badges with Enhanced Effects */
+.status-badge,
+.priority-badge,
+.tech-tag {
+  position: relative;
+  overflow: hidden;
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+}
+
+.status-badge::before,
+.priority-badge::before,
+.tech-tag::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.1),
+    transparent
+  );
+  transition: left 0.3s ease;
+}
+
+.status-badge:hover::before,
+.priority-badge:hover::before,
+.tech-tag:hover::before {
+  left: 100%;
+}
+
+/* Enhanced Header */
+.dashboard-header {
+  background: var(--dashboard-surface);
+  -webkit-backdrop-filter: blur(var(--glass-blur-strong));
+  backdrop-filter: blur(var(--glass-blur-strong));
+  border-bottom: 1px solid var(--dashboard-border);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.user-avatar {
+  position: relative;
+}
+
+.user-avatar::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: var(--gradient-primary);
+  border-radius: 50%;
+  z-index: -1;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.user-avatar:hover::before {
+  opacity: 0.5;
+}
+
+.online-indicator {
+  animation: pulse 2s ease-in-out infinite;
+}
+
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(102, 126, 234, 0.3);
+  border-radius: 4px;
+  transition: background 0.3s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(102, 126, 234, 0.5);
+}
+
+/* Loading States */
+.loading {
+  position: relative;
+  overflow: hidden;
+}
+
+.loading::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.1),
+    transparent
+  );
+  animation: loading-shimmer 1.5s infinite;
+}
+
+@keyframes loading-shimmer {
+  0% {
+    left: -100%;
+  }
+  100% {
+    left: 100%;
+  }
+}
+
+/* Responsive Enhancements */
+@media (max-width: 768px) {
+  .liquid-glass {
+    -webkit-backdrop-filter: blur(15px);
+    backdrop-filter: blur(15px);
+  }
+  
+  .sidebar {
+    -webkit-backdrop-filter: blur(25px);
+    backdrop-filter: blur(25px);
+  }
+}
+
+/* Dark Mode Specific Enhancements */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --dashboard-surface: rgba(10, 10, 10, 0.95);
+    --dashboard-border: rgba(255, 255, 255, 0.08);
+  }
+}
+
+/* High Performance Mode */
+@media (prefers-reduced-motion: reduce) {
+  .floating,
+  .pulse,
+  .loading::after,
+  .progress-fill::before,
+  .skill-fill::before {
+    animation: none;
+  }
+  
+  .liquid-glass::before,
+  .nav-item::before,
+  .stat-card::before,
+  .chart-bar::before {
+    display: none;
+  }
+}
+
+/* Focus States for Accessibility */
+.nav-item:focus,
+.add-btn:focus,
+.logout-btn:focus,
+.filter-btn:focus,
+.action-btn:focus {
+  outline: 2px solid var(--text-accent);
+  outline-offset: 2px;
+}
+
+/* Print Styles */
+@media print {
+  .sidebar,
+  .dashboard-header {
+    display: none;
+  }
+  
+  .main-content {
+    margin-left: 0;
+  }
+  
+  .liquid-glass {
+    background: white;
+    border: 1px solid #ccc;
+    box-shadow: none;
+  }
+}

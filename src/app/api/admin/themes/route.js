@@ -123,7 +123,7 @@ export async function PUT(request) {
     if (typeof glassEffect === 'boolean') updateData.glassEffect = glassEffect;
     if (typeof animations === 'boolean') updateData.animations = animations;
 
-    const result = await db.collection('site_settings').updateOne(
+    await db.collection('site_settings').updateOne(
       { type: 'theme' },
       { $set: updateData },
       { upsert: true }
@@ -171,7 +171,7 @@ export async function POST(request) {
       uploadedBy: 'admin'
     };
 
-    const result = await db.collection('site_settings').updateOne(
+    await db.collection('site_settings').updateOne(
       { type: 'theme' },
       { 
         $set: { 

@@ -16,7 +16,7 @@ export async function POST(request) {
       return new Response(JSON.stringify({ success: false, error: "Invalid OTP" }), { status: 401 });
     }
     await db.collection(collection).updateOne({ _id: new ObjectId(userId) }, { $unset: { otp: "" } });
-    return new Response(JSON.stringify({ success: true }), { status: 200 });
+    return new Response(JSON.stringify({ success: true, userId: userId }), { status: 200 });
   } catch (error) {
     return new Response(JSON.stringify({ success: false, error: error.message }), { status: 500 });
   }

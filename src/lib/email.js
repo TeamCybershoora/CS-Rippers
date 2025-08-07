@@ -9,21 +9,64 @@ export function createEmailTransporter() {
     throw new Error('Email configuration missing: EMAIL_USER and EMAIL_PASS must be set');
   }
 
-  const transporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-      user: process.env.EMAIL_USER,
-      pass: process.env.EMAIL_PASS,
+  // Enhanced Gmail configuration with multiple fallback options
+  const configs = [
+    // Primary configuration
+    {
+      service: 'gmail',
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS,
+      },
+      tls: {
+        rejectUnauthorized: false
+      }
     },
-    tls: {
-      rejectUnauthorized: false
+    // Fallback 1: Explicit SMTP with port 587
+    {
+      host: 'smtp.gmail.com',
+      port: 587,
+      secure: false,
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS,
+      },
+      tls: {
+        rejectUnauthorized: false
+      }
     },
-    // Enable debug logs only in development
-    debug: process.env.NODE_ENV === 'development',
-    logger: process.env.NODE_ENV === 'development'
-  });
+    // Fallback 2: Explicit SMTP with port 465
+    {
+      host: 'smtp.gmail.com',
+      port: 465,
+      secure: true,
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS,
+      }
+    }
+  ];
 
-  return transporter;
+  // Try each configuration until one works
+  for (let i = 0; i < configs.length; i++) {
+    try {
+      console.log(`Trying email config ${i + 1}/${configs.length}...`);
+      const transporter = nodemailer.createTransport(configs[i]);
+      
+      // Enable debug logs only in development
+      if (process.env.NODE_ENV === 'development') {
+        transporter.options.debug = true;
+        transporter.options.logger = true;
+      }
+      
+      return transporter;
+    } catch (error) {
+      console.error(`Config ${i + 1} failed:`, error.message);
+      if (i === configs.length - 1) {
+        throw new Error(`All email configurations failed: ${error.message}`);
+      }
+    }
+  }
 }
 
 // Verify email configuration
@@ -41,7 +84,9 @@ export async function verifyEmailConfig() {
       details: {
         code: error.code,
         command: error.command,
-        response: error.response
+        response: error.response,
+        emailUser: process.env.EMAIL_USER,
+        passwordLength: process.env.EMAIL_PASS?.length
       }
     };
   }
@@ -79,28 +124,29 @@ export async function sendEmailWithRetry(mailOptions, maxRetries = 3) {
 
 // Email templates
 export const emailTemplates = {
-  adminOtp: (otp) => ({
-    subject: '🔐 CS Rippers Admin Panel - Security Verification',
+  otp: (otp, type = 'login') => ({
+    subject: `Your CS Rippers ${type === 'login' ? 'Login' : 'Registration'} OTP`,
     html: `
-      <div style="font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif; max-width: 600px; margin: 0 auto; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 40px; border-radius: 16px;">
-        <div style="background: rgba(255, 255, 255, 0.95); padding: 30px; border-radius: 12px; text-align: center;">
-          <h1 style="color: #333; margin-bottom: 20px; font-size: 24px; font-weight: 600;">Admin Panel Access</h1>
-          <p style="color: #666; font-size: 16px; margin-bottom: 30px;">Your secure access code for CS Rippers Admin Panel:</p>
-          <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; font-size: 32px; font-weight: bold; padding: 20px; border-radius: 8px; letter-spacing: 4px; margin: 20px 0;">${otp}</div>
-          <p style="color: #888; font-size: 14px; margin-top: 20px;">This code expires in 10 minutes. Do not share this code with anyone.</p>
-          <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #eee;">
-            <p style="color: #999; font-size: 12px;">CS Rippers Admin Security System</p>
+      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; background-color: #f8f9fa;">
+        <div style="background-color: white; padding: 30px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+          <h1 style="color: #333; text-align: center; margin-bottom: 30px;">CS Rippers</h1>
+          <h2 style="color: #00b4db; text-align: center; margin-bottom: 20px;">${type === 'login' ? 'Login' : 'Registration'} Verification</h2>
+          <p style="color: #666; text-align: center; margin-bottom: 30px;">Your verification code is:</p>
+          <div style="text-align: center; margin-bottom: 30px;">
+            <span style="font-size: 3rem; font-weight: bold; color: #00b4db; letter-spacing: 5px; padding: 15px; background-color: #f8f9fa; border-radius: 8px;">${otp}</span>
           </div>
+          <p style="color: #666; text-align: center; font-size: 14px;">Enter this code to complete your ${type === 'login' ? 'login' : 'registration'}.</p>
+          <p style="color: #999; text-align: center; font-size: 12px; margin-top: 30px;">This code will expire in 10 minutes.</p>
         </div>
       </div>
     `
   }),
   
   test: () => ({
-    subject: 'CS Rippers - Email Configuration Test',
+    subject: 'CS Rippers - Email Test',
     html: `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
-        <h1 style="color: #333;">✅ Email Configuration Test</h1>
+        <h1 style="color: #333;">✅ Email Test</h1>
         <p>This is a test email from CS Rippers application.</p>
         <p><strong>Status:</strong> Email configuration is working properly!</p>
         <p><strong>Timestamp:</strong> ${new Date().toISOString()}</p>

@@ -135,7 +135,7 @@ export default function Dashboard() {
           email: user.email || 'No email',
           role: user.role || 'Student',
           joinDate: user.createdAt ? new Date(user.createdAt).toLocaleDateString() : '2024-01-15',
-          avatar: user.profilePicture || '/images/CSR Logo.png',
+          avatar: user.photo || user.profilePicture || '/images/CSR Logo.png',
           level: 'Advanced',
           points: 2450,
           rank: '#12',
@@ -215,7 +215,8 @@ export default function Dashboard() {
       role: updatedUser.role || prev.role,
       mobile: updatedUser.mobile || prev.mobile,
       location: updatedUser.location || prev.location,
-      bio: updatedUser.bio || prev.bio
+      bio: updatedUser.bio || prev.bio,
+      avatar: updatedUser.photo || updatedUser.profilePicture || prev.avatar
     }));
   };
 

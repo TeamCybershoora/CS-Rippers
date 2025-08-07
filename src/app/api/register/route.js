@@ -1,24 +1,27 @@
-import clientPromise from '../../../lib/mongodb';
+import { NextResponse } from 'next/server';
 import nodemailer from 'nodemailer';
+import { sendEmailWithRetry, emailTemplates } from '@/lib/email';
 
 function generateOtp() {
   return Math.floor(100000 + Math.random() * 900000).toString();
 }
 
 async function sendOtpEmail(email, otp) {
-  const transporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-      user: process.env.EMAIL_USER,
-      pass: process.env.EMAIL_PASS,
-    },
-  });
-  await transporter.sendMail({
-    from: process.env.EMAIL_USER,
-    to: email,
-    subject: 'Your CS Rippers Registration OTP',
-    html: `<div style="font-family:sans-serif;font-size:1.2rem"><b>Your OTP is:</b> <span style="font-size:2rem;color:#00b4db">${otp}</span><br/>Enter this to complete your registration.</div>`
-  });
+  try {
+    const template = emailTemplates.otp(otp, 'registration');
+    const mailOptions = {
+      from: process.env.EMAIL_USER,
+      to: email,
+      subject: template.subject,
+      html: template.html
+    };
+    
+    await sendEmailWithRetry(mailOptions);
+    console.log('✅ OTP email sent successfully to:', email);
+  } catch (error) {
+    console.error('❌ Failed to send OTP email:', error);
+    throw new Error(`Failed to send OTP email: ${error.message}`);
+  }
 }
 
 export async function POST(request) {

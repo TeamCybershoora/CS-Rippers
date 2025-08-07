@@ -1,5 +1,5 @@
 "use client";
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 export default function ProfileSection({ userProfile, onProfileUpdate }) {
   const [isEditing, setIsEditing] = useState(false);
@@ -7,6 +7,15 @@ export default function ProfileSection({ userProfile, onProfileUpdate }) {
   const [activeTab, setActiveTab] = useState('personal');
   const [saving, setSaving] = useState(false);
   const [saveMessage, setSaveMessage] = useState('');
+  const [photoFile, setPhotoFile] = useState(null);
+  const [photoPreview, setPhotoPreview] = useState(null);
+  const [uploadingPhoto, setUploadingPhoto] = useState(false);
+  const [showPhotoUpload, setShowPhotoUpload] = useState(false);
+
+  // Update editedProfile when userProfile changes
+  useEffect(() => {
+    setEditedProfile(userProfile);
+  }, [userProfile]);
 
   const skills = [
     { name: 'React', level: 90, category: 'Frontend' },
@@ -141,6 +150,90 @@ export default function ProfileSection({ userProfile, onProfileUpdate }) {
     setIsEditing(false);
   };
 
+  // Photo upload functions
+  const handlePhotoChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setPhotoFile(file);
+      setPhotoPreview(URL.createObjectURL(file));
+      setShowPhotoUpload(true);
+    }
+  };
+
+  const uploadToCloudinary = async (file) => {
+    setUploadingPhoto(true);
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("upload_preset", process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET);
+    formData.append("folder", "cs_ripper/profile-photo");
+    
+    try {
+      const res = await fetch(`https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload`, {
+        method: "POST",
+        body: formData,
+      });
+      const data = await res.json();
+      if (data.secure_url) return data.secure_url;
+      throw new Error(data.error?.message || "Cloudinary upload failed");
+    } finally {
+      setUploadingPhoto(false);
+    }
+  };
+
+  const handlePhotoUpload = async () => {
+    if (!photoFile) return;
+    
+    try {
+      const photoUrl = await uploadToCloudinary(photoFile);
+      
+      // Update the profile with new photo
+      const userId = localStorage.getItem("userId");
+      if (!userId) {
+        setSaveMessage('User ID not found. Please login again.');
+        return;
+      }
+
+      const response = await fetch('/api/user', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          userId,
+          photo: photoUrl
+        }),
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        setSaveMessage('Profile picture updated successfully!');
+        setShowPhotoUpload(false);
+        setPhotoFile(null);
+        setPhotoPreview(null);
+        
+        // Update parent component with new profile data
+        if (onProfileUpdate) {
+          onProfileUpdate(data.user);
+        }
+        
+        // Clear success message after 3 seconds
+        setTimeout(() => setSaveMessage(''), 3000);
+      } else {
+        setSaveMessage(data.error || 'Failed to update profile picture');
+      }
+    } catch (error) {
+      console.error('Error uploading photo:', error);
+      setSaveMessage('Photo upload failed. Please try again.');
+    }
+  };
+
+  const handlePhotoCancel = () => {
+    setShowPhotoUpload(false);
+    setPhotoFile(null);
+    setPhotoPreview(null);
+  };
+
   const getRarityColor = (rarity) => {
     switch (rarity) {
       case 'legendary': return '#FFD700';
@@ -178,9 +271,18 @@ export default function ProfileSection({ userProfile, onProfileUpdate }) {
         <div className="profile-info">
           <div className="profile-avatar-section">
             <div className="profile-avatar">
-              <img src={userProfile.avatar} alt={userProfile.name} />
+              <img src={photoPreview || userProfile.avatar} alt={userProfile.name} />
               <div className="avatar-ring"></div>
-              <button className="avatar-edit-btn">📷</button>
+              <label htmlFor="photo-upload" className="avatar-edit-btn">
+                📷
+                <input 
+                  id="photo-upload" 
+                  type="file" 
+                  accept="image/*" 
+                  onChange={handlePhotoChange} 
+                  style={{ display: 'none' }}
+                />
+              </label>
             </div>
             <div className="profile-details">
               <h1>{userProfile.name}</h1>
@@ -229,6 +331,34 @@ export default function ProfileSection({ userProfile, onProfileUpdate }) {
       {saveMessage && (
         <div className={`save-message ${saveMessage.includes('success') ? 'success' : 'error'}`}>
           {saveMessage}
+        </div>
+      )}
+
+      {/* Photo Upload Confirmation */}
+      {showPhotoUpload && (
+        <div className="photo-upload-modal liquid-glass">
+          <div className="photo-upload-content">
+            <h3>Update Profile Picture</h3>
+            <div className="photo-preview">
+              <img src={photoPreview} alt="Preview" />
+            </div>
+            <div className="photo-upload-actions">
+              <button 
+                className="upload-btn" 
+                onClick={handlePhotoUpload}
+                disabled={uploadingPhoto}
+              >
+                {uploadingPhoto ? '⏳ Uploading...' : '✅ Upload Photo'}
+              </button>
+              <button 
+                className="cancel-upload-btn" 
+                onClick={handlePhotoCancel}
+                disabled={uploadingPhoto}
+              >
+                ❌ Cancel
+              </button>
+            </div>
+          </div>
         </div>
       )}
 
@@ -1063,6 +1193,122 @@ export default function ProfileSection({ userProfile, onProfileUpdate }) {
           opacity: 0.6;
           cursor: not-allowed;
           transform: none !important;
+        }
+
+        /* Photo Upload Modal Styles */
+        .photo-upload-modal {
+          position: fixed;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background: rgba(0, 0, 0, 0.8);
+          backdrop-filter: blur(10px);
+          -webkit-backdrop-filter: blur(10px);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          z-index: 1000;
+          animation: fadeIn 0.3s ease-out;
+        }
+
+        .photo-upload-content {
+          background: rgba(15, 15, 15, 0.95);
+          backdrop-filter: blur(20px);
+          -webkit-backdrop-filter: blur(20px);
+          border: 1px solid rgba(255, 255, 255, 0.1);
+          border-radius: 20px;
+          padding: 32px;
+          max-width: 400px;
+          width: 90%;
+          text-align: center;
+          box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+          animation: slideUp 0.3s ease-out;
+        }
+
+        .photo-upload-content h3 {
+          margin: 0 0 24px 0;
+          font-size: 24px;
+          font-weight: 600;
+          color: #ffffff;
+        }
+
+        .photo-preview {
+          margin: 24px 0;
+          display: flex;
+          justify-content: center;
+        }
+
+        .photo-preview img {
+          width: 120px;
+          height: 120px;
+          border-radius: 50%;
+          object-fit: cover;
+          border: 3px solid rgba(255, 255, 255, 0.2);
+          box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+        }
+
+        .photo-upload-actions {
+          display: flex;
+          gap: 12px;
+          justify-content: center;
+          margin-top: 24px;
+        }
+
+        .upload-btn,
+        .cancel-upload-btn {
+          padding: 12px 24px;
+          border: none;
+          border-radius: 12px;
+          font-size: 14px;
+          font-weight: 600;
+          cursor: pointer;
+          transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+          min-width: 120px;
+        }
+
+        .upload-btn {
+          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+          color: white;
+        }
+
+        .upload-btn:hover:not(:disabled) {
+          transform: translateY(-2px);
+          box-shadow: 0 8px 24px rgba(102, 126, 234, 0.4);
+        }
+
+        .cancel-upload-btn {
+          background: rgba(239, 68, 68, 0.1);
+          border: 1px solid rgba(239, 68, 68, 0.3);
+          color: #ef4444;
+        }
+
+        .cancel-upload-btn:hover:not(:disabled) {
+          background: rgba(239, 68, 68, 0.2);
+          transform: translateY(-2px);
+        }
+
+        .upload-btn:disabled,
+        .cancel-upload-btn:disabled {
+          opacity: 0.6;
+          cursor: not-allowed;
+          transform: none !important;
+        }
+
+        @keyframes fadeIn {
+          from { opacity: 0; }
+          to { opacity: 1; }
+        }
+
+        @keyframes slideUp {
+          from {
+            opacity: 0;
+            transform: translateY(20px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
         }
 
         /* Responsive Design */
